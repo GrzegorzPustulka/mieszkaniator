@@ -12,27 +12,30 @@ class OfferRepository extends Repository
         parent::__construct();
         $this->userRepository = new UserRepository();
     }
-    public function getOffer(int $id): ?Offer
+    public function getOfferById(int $id)
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT * FROM public.offers WHERE id = :id
+            SELECT 
+                offers.*,
+                users_details.name,
+                users_details.surname,
+                users_details.phone,
+                users.email
+            FROM 
+                offers
+            JOIN 
+                users_offers ON offers.id = users_offers.id_offer
+            JOIN 
+                users ON users_offers.id_user = users.id
+            JOIN 
+                users_details ON users.id_user_details = users_details.id
+            WHERE 
+                offers.id = :id;
         ');
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
 
-        $offer = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($offer == false) {
-            return null;
-        }
-
-        return new Offer(
-            $offer['size'],
-            $offer['price'],
-            $offer['description'],
-            $offer['rooms'],
-            $offer['city']
-        );
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getOffers(): array

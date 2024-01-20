@@ -15,6 +15,8 @@ Router::get('contact', 'DefaultController');
 # Offers
 Router::get('offers', 'OfferController');
 Router::post('addOffer', 'OfferController');
+Router::post('getOffer', 'OfferController');
+Router::get('offer', 'OfferController');
 
 # Security
 Router::post('login', 'SecurityController');
