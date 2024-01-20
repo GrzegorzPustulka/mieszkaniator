@@ -2,17 +2,21 @@
 
 require_once 'AppController.php';
 require_once __DIR__.'/../repository/OfferRepository.php';
+require_once __DIR__.'/../repository/UserRepository.php';
 require_once __DIR__.'/../models/Offer.php';
 
 class OfferController extends AppController
 {
     private $offerRepository;
+    private $userRepository;
+
     private $message = [];
 
     public function __construct()
     {
         parent::__construct();
         $this->offerRepository = new OfferRepository();
+        $this->userRepository = new UserRepository();
     }
 
     public function offers()
@@ -46,6 +50,13 @@ class OfferController extends AppController
             header('Location: login');
             exit();
         }
+
+        $user = $this->userRepository->getUser($_SESSION['user_email']);
+        if ($user->isVerified() !== true) {
+            $this->message[] = 'Nie masz uprawnień, aby dodać ofertę.';
+            return $this->render('add-offer', ['messages' => $this->message]);
+        }
+
 
         if ($this->isPost()) {
             $offer = new Offer($_POST['size'], $_POST['price'], $_POST['description'], $_POST['rooms'], $_POST['city']);
