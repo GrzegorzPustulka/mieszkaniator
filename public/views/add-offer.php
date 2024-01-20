@@ -26,7 +26,7 @@
 </header>
 
 <div class="container mt-5">
-    <form>
+    <form action="addOffer" method="POST">
         <h2 class="mb-4">Dodaj Ofertę Mieszkania</h2>
         <div class="form-group">
             <label for="size">Rozmiar (m²)</label>

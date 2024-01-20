@@ -22,8 +22,9 @@ class OfferController extends AppController
             header('Location: login');
             exit();
         }
-
-        $this->render('offers');
+        $message = '';
+        $offers = $this->offerRepository->getOffers();
+        $this->render('offers', ['offers' => $offers, 'message' => $message]);
     }
 
     public function addOffer()

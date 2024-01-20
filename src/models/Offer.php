@@ -7,19 +7,23 @@ class Offer
     private $description;
     private $rooms;
     private $city;
+    private $id;
+
 
     public function __construct(
         string $size,
         string $price,
         string $description,
         string $rooms,
-        string $city
+        string $city,
+        int $id = null
     ) {
         $this->size = $size;
         $this->price = $price;
         $this->description = $description;
         $this->rooms = $rooms;
         $this->city = $city;
+        $this->id = $id;
     }
 
     public function getSize(): string
@@ -61,6 +65,15 @@ class Offer
     public function setCity(string $city): void
     {
         $this->city = $city;
+    }
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 
 

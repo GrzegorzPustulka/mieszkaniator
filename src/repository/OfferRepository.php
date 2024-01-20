@@ -5,6 +5,13 @@ require_once __DIR__.'/../models/Offer.php';
 
 class OfferRepository extends Repository
 {
+    private $userRepository;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->userRepository = new UserRepository();
+    }
     public function getOffer(int $id): ?Offer
     {
         $stmt = $this->database->connect()->prepare('
@@ -27,23 +34,55 @@ class OfferRepository extends Repository
             $offer['city']
         );
     }
+
+    public function getOffers(): array
+    {
+        $result = [];
+
+        $stmt = $this->database->connect()->prepare('
+            SELECT * FROM public.offers
+        ');
+        $stmt->execute();
+        $offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($offers as $offer) {
+            $result[] = new Offer(
+                $offer['size'],
+                $offer['price'],
+                $offer['description'],
+                $offer['rooms'],
+                $offer['city'],
+                $offer['id']
+            );
+        }
+
+        return $result;
+    }
+
     public function addOffer(Offer $offer): void
     {
         $stmt = $this->database->connect()->prepare('
-            INSERT INTO public.offers (size, price, description, rooms, city)
-            VALUES (?, ?, ?, ?, ?)
-        ');
+        SELECT add_offer(?, ?, ?, ?, ?, ?)
+    ');
 
-        //TODO you should get this value from logged user session
-        $assignedById = 1;
+        $assignedById = $this->userRepository->getUserId($_SESSION['user_email']);
 
         $stmt->execute([
-            $offer['size'],
-            $offer['price'],
-            $offer['description'],
-            $offer['rooms'],
-            $offer['city'],
+            $offer->getSize(),
+            $offer->getPrice(),
+            $offer->getDescription(),
+            $offer->getRooms(),
+            $offer->getCity(),
             $assignedById
         ]);
+
+        $offerId = $stmt->fetch(PDO::FETCH_COLUMN);
+
+        $stmt = $this->database->connect()->prepare('
+            INSERT INTO users_offers (id_user, id_offer)
+            VALUES (?, ?)
+        ');
+        $stmt->execute([$assignedById, $offerId]);
+
     }
 }

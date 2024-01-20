@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oferty Mieszkań - Portal Aukcyjny Mieszkań</title>
     <link rel="stylesheet" href="/public/css/info_page.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 <header>
@@ -22,23 +23,45 @@
         </nav>
     </div>
 </header>
-
-<section class="container offers">
-    <h2>Nasze Oferty</h2>
-    <div class="offer-grid">
-        <!-- Tutaj powtórz blok .offer dla każdej oferty, zmieniając szczegóły i obraz -->
-        <div class="offer">
-            <img src="path/to/image.jpg" alt="Mieszkanie">
-            <h3>Nazwa Mieszkania</h3>
-            <p class="price">Cena: 1900zł</p>
-            <p class="location"><i class="fas fa-map-marker-alt"></i> Kraków, Stare Miasto</p>
-            <p class="features"><i class="fas fa-expand"></i> 32m² <i class="fas fa-wifi"></i> Free WiFi</p>
-            <button class="btn">Zobacz Ofertę</button>
-        </div>
-        <!-- Koniec bloku .offer -->
+<div class="container mt-5">
+    <h2>Oferty Mieszkań</h2>
+    <div class="row">
+        <?php foreach ($offers as $offer): ?>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="/public/images/aparment.jpg" class="card-img-top" alt="Zdjęcie mieszkania">
+                    <div class="card-body">
+                        <h5 class="card-title"><?= $offer->getCity(); ?></h5>
+                        <p class="card-text"><?= $offer->getDescription(); ?></p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Rozmiar: <?= $offer->getSize(); ?> m²</li>
+                            <li class="list-group-item">Cena: <?= $offer->getPrice(); ?> PLN</li>
+                            <li class="list-group-item">Ilość pokoi: <?= $offer->getRooms(); ?></li>
+                        </ul>
+                        <button class="btn btn-primary" onclick="viewOffer(<?= $offer->getId(); ?>)">Zobacz ofertę</button>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
     </div>
-</section>
+</div>
 
+<script>
+    function viewOffer(offerId) {
+        fetch('/api/offer/' + offerId)
+            .then(response => response.json())
+            .then(data => {
+                // Tutaj możesz przetwarzać dane oferty, np. wyświetlić szczegóły w modalu lub na nowej stronie
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Błąd podczas pobierania oferty:', error);
+            });
+    }
+</script>
 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.5/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
