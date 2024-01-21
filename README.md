@@ -1,18 +1,14 @@
-# Communicator
+# DomAukcyjny Miszkania
 
-It is first project from WDPAI.
+DomAukcyjny Miszkania jest to aplikacja webowa, która umożliwia użytkownikom wystawianie na aukcje swoich mieszkań.
 
-## Local installation 
-
-Clone this repository to your device:
+## Instalacja
 
    ```sh
    git clone https://github.com/GrzegorzPustulka/WDPAI.git  
    ```
 
-### Docker
-
-To run this project using Docker, follow these steps:
+## Docker
 
 1. Install Docker on your system if it's not already installed: [Docker Installation Guide](https://docs.docker.com/get-docker/).
 2. ```cd WDPAI```
@@ -22,14 +18,39 @@ To run this project using Docker, follow these steps:
 To delete all images: ```docker images -a -q | % { docker image rm $_ -f }```
 
 
-### Contact
+## Użyte technologie
 
-Grzegorz Pustułka - @gpustulka - grzegorz.pustulka@gmail.com
+- [PHP](https://www.php.net/)
+- [Docker](https://www.docker.com/)
+- [Bootstrap](https://getbootstrap.com/)
+- [JavaScript](https://www.javascript.com/)
+- [HTML](https://html.com/)
+- [CSS](https://www.w3.org/Style/CSS/Overview.en.html)
+- [postgreSQL](https://www.postgresql.org/)
 
-Project Link: https://github.com/grzegorzpustulka/WDPAI
+
+## Kontakt
+
+- Grzegorz Pustułka
+
+- email: kontakt.pustulka@gmail.com
+
+- linkedin: https://www.linkedin.com/in/grzegorzPustulka/
+- Project Link: https://github.com/grzegorzpustulka/WDPAI
 
 
-### License
+## Screenshots
+
+![offers](./screenshots/offers.png)
+![offer](./screenshots/offer.png)
+![contact](./screenshots/contact.png)
+![login](./screenshots/login.png)
+![register](./screenshots/rejestracja.png)
+![addOffer](./screenshots/insert.png)
+![about](./screenshots/about.png)
+
+
+## License
 
 MIT License
 
